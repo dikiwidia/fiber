@@ -3,12 +3,12 @@ package migration
 import (
 	"fmt"
 
-	"github.com/dikiwidia/fiber/config"
-	"github.com/dikiwidia/fiber/entity"
+	"github.com/dikiwidia/fiber/database"
+	"github.com/dikiwidia/fiber/models/entity"
 )
 
 func RunMigration() {
-	err := config.DB.AutoMigrate(&entity.User{})
+	err := database.DB.AutoMigrate(&entity.User{})
 	if err != nil {
 		panic(err)
 	}
