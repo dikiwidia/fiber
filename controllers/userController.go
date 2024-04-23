@@ -57,3 +57,27 @@ func UserControllerCreate(c *fiber.Ctx) error {
 		"data":   newUser,
 	})
 }
+
+func UserControllerGetById(c *fiber.Ctx) error {
+	var user []entity.User
+	id := c.Params("id")
+	if id == "" {
+		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "ID must be filled",
+			"status":  "Failed",
+		})
+	}
+
+	if err := database.DB.Where("id = ?", id).First(&user).Error; err != nil {
+		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Not Found",
+			"status":  "Failed",
+		})
+		return nil
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "OK",
+		"data":   user,
+	})
+}
